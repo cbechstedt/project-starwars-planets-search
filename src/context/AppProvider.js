@@ -12,10 +12,10 @@ function AppProvider({ children }) {
   const [data, setData] = useState([]);
   const [titles, setTitles] = useState([]);
   const [filterName, setFilterName] = useState('');
-  const [column, setColumn] = useState('population');
+  const [columnUpdated, setColumnUpdated] = useState(columnOptions);
+  const [column, setColumn] = useState(columnUpdated[0]);
   const [comparison, setComparison] = useState('maior que');
   const [valueNumber, setValueNumber] = useState(0);
-  const [columnUpdated, setColumnUpdated] = useState(columnOptions);
 
   const handleFilterName = ({ target }) => {
     setFilterName(target.value);
@@ -49,9 +49,10 @@ function AppProvider({ children }) {
         Number(element[column]) === Number(valueNumber)));
       setData(filtedData);
     }
-    const updatedFilters = columnUpdated
+    const updatedColumn = columnUpdated
       .filter((element) => element !== column);
-    setColumnUpdated(updatedFilters);
+    setColumnUpdated(updatedColumn);
+    setColumn(updatedColumn[0]);
   }, [column, comparison, data, valueNumber, columnUpdated]);
 
   const requestAPI = async () => {
