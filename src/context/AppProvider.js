@@ -2,6 +2,12 @@ import PropTypes from 'prop-types';
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import AppContext from './AppContext';
 
+const columnOptions = ['population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water'];
+
 function AppProvider({ children }) {
   const [data, setData] = useState([]);
   const [titles, setTitles] = useState([]);
@@ -9,6 +15,7 @@ function AppProvider({ children }) {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [valueNumber, setValueNumber] = useState(0);
+  const [columnUpdated, setColumnUpdated] = useState(columnOptions);
 
   const handleFilterName = ({ target }) => {
     setFilterName(target.value);
@@ -42,7 +49,10 @@ function AppProvider({ children }) {
         Number(element[column]) === Number(valueNumber)));
       setData(filtedData);
     }
-  }, [column, comparison, data, valueNumber]);
+    const updatedFilters = columnUpdated
+      .filter((element) => element !== column);
+    setColumnUpdated(updatedFilters);
+  }, [column, comparison, data, valueNumber, columnUpdated]);
 
   const requestAPI = async () => {
     const response = await fetch('https://swapi.dev/api/planets');
@@ -69,6 +79,7 @@ function AppProvider({ children }) {
     handleComparison,
     handleValueNumber,
     handleFilterBtn,
+    columnUpdated,
   }), [
     data,
     titles,
@@ -77,6 +88,7 @@ function AppProvider({ children }) {
     comparison,
     valueNumber,
     handleFilterBtn,
+    columnUpdated,
   ]);
 
   return (

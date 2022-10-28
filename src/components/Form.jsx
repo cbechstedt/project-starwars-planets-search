@@ -4,7 +4,7 @@ import AppContext from '../context/AppContext';
 export default function Form() {
   const { filterName, handleFilterName, column, handleColumn,
     comparison, handleComparison, valueNumber,
-    handleValueNumber, handleFilterBtn } = useContext(AppContext);
+    handleValueNumber, handleFilterBtn, columnUpdated } = useContext(AppContext);
 
   return (
     <form>
@@ -28,11 +28,9 @@ export default function Form() {
           value={ column }
           onChange={ handleColumn }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { columnUpdated.map((element) => (
+            <option key={ element } value={ element }>{ element }</option>
+          )) }
         </select>
       </label>
 
